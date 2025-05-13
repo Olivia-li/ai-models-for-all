@@ -24,7 +24,7 @@ INIT_CONDITIONS_DIR = CACHE_DIR / "initial_conditions"
 
 # Set a default GPU that's large enough to work with any of the published models
 # available to the ai-models package.
-DEFAULT_GPU_CONFIG = modal.gpu.A100(memory=40)
+DEFAULT_GPU_CONFIG = "A100-40GB"
 
 # Set a default date to use when fetching sample data from ERA-5 to create templates
 # for processing GFS/GDAS data; we need this because we have to sort GRIB messages by
