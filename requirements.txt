@@ -1,7 +1,5 @@
 ai-models
 ai-models-graphcast
-"jax[cuda12]"
-google-cloud-storage
 modal
 python-dotenv
 ujson

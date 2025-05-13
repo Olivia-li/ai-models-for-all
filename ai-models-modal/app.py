@@ -91,8 +91,11 @@ inference_image = (
     # properly configured version of JAX that can run on GPUs - so we take care
     # of those here.
     .pip_install(
-        ["jax[cuda11_pip]==0.4.20", "git+https://github.com/deepmind/graphcast.git"],
+        ["jax[cuda11_pip]==0.5.2", "git+https://github.com/deepmind/graphcast.git"],
         find_links="https://storage.googleapis.com/jax-releases/jax_cuda_releases.html",
+    )
+    .pip_install(
+        ["jaxlib==0.5.2"]
     )
     # (3) Install the ai-models plugins enabled for this package.
     .pip_install(
@@ -102,8 +105,10 @@ inference_image = (
         ]
     )
     .run_commands("pip uninstall -y onnxruntime")
+    .run_commands("pip uninstall -y dm-haiku")
     # (4) Ensure that we're using the ONNX GPU-enabled runtime.
     .pip_install("onnxruntime-gpu==1.16.3")
+    .pip_install("dm-haiku==0.0.13")
     # Generate a blank .cdsapirc file so that we can override credentials with
     # environment variables later on. This is necessary because the ai-models
     # package input handler ultimately uses climetlab.sources.CDSAPIKeyPrompt to

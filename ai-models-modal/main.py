@@ -20,7 +20,7 @@ logger = config.get_logger(__name__, add_handler=False)
 @stub.function(
     image=stub.image,
     secrets=[config.ENV_SECRETS],
-    volume={str(config.CACHE_DIR): volume},
+    volumes={str(config.CACHE_DIR): volume},
     timeout=300,
 )
 def prepare_gfs_analysis(
@@ -196,7 +196,7 @@ def prepare_gfs_analysis(
 @stub.function(
     image=stub.image,
     secrets=[config.ENV_SECRETS],
-    volume={str(config.CACHE_DIR): volume},
+    volumes={str(config.CACHE_DIR): volume},
     # gpu="T4",
     timeout=60,
     allow_cross_region_volumes=True,
@@ -260,8 +260,8 @@ def check_assets(skip_validate_env: bool = False):
 @stub.cls(
     secrets=[config.ENV_SECRETS],
     gpu=config.DEFAULT_GPU_CONFIG,
-    volume={str(config.CACHE_DIR): volume},
-    concurrency_limit=1,
+    volumes={str(config.CACHE_DIR): volume},
+    max_containers=1,
     timeout=1_800,
 )
 class AIModel:
@@ -294,6 +294,7 @@ class AIModel:
 
         self.use_gfs = use_gfs
 
+    @modal.enter()
     def __enter__(self):
         logger.info(f"   Model: {self.model_name}")
         logger.info(f"   Run initialization datetime: {self.model_init}")
@@ -460,7 +461,7 @@ def _maybe_download_assets(model_name: str) -> None:
 @stub.function(
     image=stub.image,
     secrets=[config.ENV_SECRETS],
-    volume={str(config.CACHE_DIR): volume},
+    volumes={str(config.CACHE_DIR): volume},
     allow_cross_region_volumes=True,
     timeout=1_800,
 )
@@ -530,7 +531,7 @@ def generate_forecast(
 @stub.function(
     image=stub.image,
     secrets=[config.ENV_SECRETS],
-    volume={str(config.CACHE_DIR): volume},
+    volumes={str(config.CACHE_DIR): volume},
     timeout=7_200,
     allow_cross_region_volumes=True,
 )
